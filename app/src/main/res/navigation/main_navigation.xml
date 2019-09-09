@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="nl.tcilegnar.mygithub.ui.home.ProfileFragment"
+        android:name="nl.tcilegnar.mygithub.ui.profile.UserProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
