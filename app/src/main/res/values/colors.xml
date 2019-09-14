@@ -6,4 +6,5 @@
 
     <color name="textColor_colorPrimary">#E0E0F8</color>
     <color name="textColor_colorAccent">#FFF</color>
+    <color name="textColor_colorAccentSub">#CCC</color>
 </resources>
