@@ -1,4 +1,4 @@
-package nl.tcilegnar.mygithub.ui.profile;
+package nl.tcilegnar.mygithub.util;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;

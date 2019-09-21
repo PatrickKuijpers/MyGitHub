@@ -6,11 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import nl.tcilegnar.mygithub.R
 import nl.tcilegnar.mygithub.databinding.FragmentProfileBinding
-import nl.tcilegnar.mygithub.model.User
 
 private const val TAG = "UserProfileFragment"
 
