@@ -1,5 +1,6 @@
 package nl.tcilegnar.mygithub.api
 
+import androidx.lifecycle.LiveData
 import nl.tcilegnar.mygithub.model.Repo
 import nl.tcilegnar.mygithub.model.User
 import okhttp3.OkHttpClient
@@ -13,7 +14,10 @@ import retrofit2.http.Path
 
 interface GitHubService {
     @GET("users/{loginName}")
-    fun getUser(@Path("loginName") userName: String): Call<User>
+    fun getUserOld(@Path("loginName") userName: String): Call<User>
+
+    @GET("users/{loginName}")
+    fun getUser(@Path("loginName") userName: String): LiveData<ApiResponse<User>>
 
     @GET("users/{loginName}/repos")
     fun getRepos(@Path("loginName") userName: String): Call<List<Repo>>

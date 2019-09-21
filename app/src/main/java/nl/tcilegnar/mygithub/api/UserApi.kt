@@ -15,7 +15,7 @@ class UserApi {
             onSuccess: (user: User) -> Unit,
             onError: (error: String) -> Unit
         ) {
-            service.getUser(userName).enqueue(
+            service.getUserOld(userName).enqueue(
                 object : Callback<User> {
                     override fun onResponse(
                         call: Call<User>?,

@@ -1,25 +1,27 @@
 package nl.tcilegnar.mygithub.data
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import nl.tcilegnar.mygithub.api.GitHubService
-import nl.tcilegnar.mygithub.api.UserApi
+import nl.tcilegnar.mygithub.api.Resource
+import nl.tcilegnar.mygithub.db.UserDao
 import nl.tcilegnar.mygithub.model.User
 
-private const val TAG = "UserRepository"
 
 class UserRepository(
-    private val service: GitHubService
+    private val userDao: UserDao,
+    private val githubService: GitHubService
 ) {
-    var user = MutableLiveData<User>()
+    fun loadUser(userName: String): LiveData<Resource<User>> {
+        return object : NetworkBoundResource<User, User>() {
+            override fun saveCallResult(item: User) {
+                userDao.insert(item)
+            }
 
-    fun loadUser(userName: String) {
-        // TODO (PK): get from cache / db
-        UserApi.getUser(userName, service, { user ->
-            Log.d(TAG, "User retrieved from API: $userName")
-            this.user.value = user
-        }, { error ->
-            Log.e(TAG, "fail to get user: $error")
-        })
+            override fun shouldFetch(data: User?) = data == null
+
+            override fun loadFromDb() = userDao.findByLogin(userName)
+
+            override fun createCall() = githubService.getUser(userName)
+        }.asLiveData()
     }
 }

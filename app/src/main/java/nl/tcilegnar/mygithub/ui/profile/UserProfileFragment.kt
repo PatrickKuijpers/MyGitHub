@@ -19,7 +19,7 @@ class UserProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userViewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
-        userViewModel.loadUser("PatrickKuijpers") // TODO (PK): hardcoded for now, id = 4254366
+        userViewModel.setLogin("PatrickKuijpers") // TODO (PK): hardcoded for now, id = 4254366
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
