@@ -2,12 +2,12 @@
 
     <style name="userInfoText">
         <item name="android:textSize">20sp</item>
-        <item name="android:textColor">@color/textColor_colorAccent</item>
+        <item name="android:textColor">@color/textColor_default</item>
     </style>
 
     <style name="userInfoTextSub">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/textColor_colorAccentSub</item>
+        <item name="android:textColor">@color/textColor_default</item>
     </style>
 
 </resources>
