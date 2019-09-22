@@ -21,6 +21,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import nl.tcilegnar.mygithub.api.*
+import nl.tcilegnar.mygithub.AppExecutors
 
 /**
  * A generic class that can provide a resource backed by both the sqlite database and the network.
@@ -32,7 +33,7 @@ import nl.tcilegnar.mygithub.api.*
  * @param <RequestType>
 </RequestType></ResultType> */
 abstract class NetworkBoundResource<ResultType, RequestType>
-@MainThread constructor() {
+@MainThread constructor(private val appExecutors: AppExecutors) {
 
     private val result = MediatorLiveData<Resource<ResultType>>()
 
@@ -71,19 +72,24 @@ abstract class NetworkBoundResource<ResultType, RequestType>
             result.removeSource(dbSource)
             when (response) {
                 is ApiSuccessResponse -> {
-                    // Different from original project: below isn't run by separate executors
-                    saveCallResult(processResponse(response))
-                    // we specially request a new live data,
-                    // otherwise we will get immediately last cached value,
-                    // which may not be updated with latest results received from network.
-                    result.addSource(loadFromDb()) { newData ->
-                        setValue(Resource.success(newData))
+                    appExecutors.diskIO().execute {
+                        saveCallResult(processResponse(response))
+                        appExecutors.mainThread().execute {
+                            // we specially request a new live data,
+                            // otherwise we will get immediately last cached value,
+                            // which may not be updated with latest results received from network.
+                            result.addSource(loadFromDb()) { newData ->
+                                setValue(Resource.success(newData))
+                            }
+                        }
                     }
                 }
                 is ApiEmptyResponse -> {
-                    // reload from disk whatever we had
-                    result.addSource(loadFromDb()) { newData ->
-                        setValue(Resource.success(newData))
+                    appExecutors.mainThread().execute {
+                        // reload from disk whatever we had
+                        result.addSource(loadFromDb()) { newData ->
+                            setValue(Resource.success(newData))
+                        }
                     }
                 }
                 is ApiErrorResponse -> {

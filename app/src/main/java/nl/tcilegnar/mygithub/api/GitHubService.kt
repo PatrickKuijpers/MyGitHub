@@ -3,6 +3,7 @@ package nl.tcilegnar.mygithub.api
 import androidx.lifecycle.LiveData
 import nl.tcilegnar.mygithub.model.Repo
 import nl.tcilegnar.mygithub.model.User
+import nl.tcilegnar.mygithub.util.LiveDataCallAdapterFactory
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.logging.HttpLoggingInterceptor.Level
@@ -30,6 +31,7 @@ interface GitHubService {
                 .baseUrl(BASE_URL)
                 .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(LiveDataCallAdapterFactory())
                 .build()
                 .create(GitHubService::class.java)
         }

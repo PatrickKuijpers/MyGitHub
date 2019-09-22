@@ -7,17 +7,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import nl.tcilegnar.mygithub.api.GitHubService
 import nl.tcilegnar.mygithub.api.Resource
+import nl.tcilegnar.mygithub.data.UserRepository
 import nl.tcilegnar.mygithub.db.GithubDb
 import nl.tcilegnar.mygithub.model.User
-import nl.tcilegnar.mygithub.data.UserRepository
 import nl.tcilegnar.mygithub.util.AbsentLiveData
+import nl.tcilegnar.mygithub.AppExecutors
 
 class UserViewModel(
     application: Application
 //    private val repository: UserRepository // TODO (PK): inject this
 ) : AndroidViewModel(application) {
     private val repository: UserRepository =
-        UserRepository(GithubDb.getDatabase(application).userDao(), GitHubService.create())
+        UserRepository(AppExecutors(), GithubDb.getDatabase(application).userDao(), GitHubService.create())
 
     private val _login = MutableLiveData<String>()
 
