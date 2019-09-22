@@ -30,7 +30,7 @@ class UserViewModel(
         }
     }
 
-    val userResource: LiveData<Resource<User>> = Transformations.switchMap(_login) { login ->
+    val userResourceLiveData: LiveData<Resource<User>> = Transformations.switchMap(_login) { login ->
         if (login == null) {
             AbsentLiveData.create()
         }
@@ -39,9 +39,9 @@ class UserViewModel(
         }
     }
 
-    val user: LiveData<User> = Transformations.switchMap(userResource) { userResource ->
-        if (userResource == null) {
-            AbsentLiveData.create()
+    val user: LiveData<User> = Transformations.switchMap(userResourceLiveData) { userResource ->
+        if (userResource?.data == null) {
+            AbsentLiveData.create<User>()
         }
         else {
             MutableLiveData(userResource.data)
